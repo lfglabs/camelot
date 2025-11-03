@@ -42,8 +42,14 @@ class ImageConversionBackend:
         """
         self.backend: ConversionBackend = self.get_backend(backend)
         self.use_fallback: bool = use_fallback
+        # Get the backend name for fallback exclusion
+        if isinstance(backend, str):
+            backend_name = backend
+        else:
+            # Try to determine backend type from object
+            backend_name = type(self.backend).__name__.replace("Backend", "").lower()
         self.fallbacks: List[str] = list(
-            filter(lambda x: isinstance(backend, str) and x != backend, BACKENDS.keys())
+            filter(lambda x: x != backend_name, BACKENDS.keys())
         )
 
     def get_backend(self, backend):

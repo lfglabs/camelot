@@ -12,6 +12,7 @@ from camelot.io import PDFHandler
 
 from .conftest import skip_on_windows
 from .conftest import skip_pdftopng
+from .conftest import skip_without_ghostscript
 from .data import *
 
 
@@ -60,7 +61,7 @@ def test_repr_ghostscript(testdir):
     tables = camelot.read_pdf(filename, backend="ghostscript")
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 @skip_on_windows
@@ -69,7 +70,7 @@ def test_repr_ghostscript_custom_backend(testdir):
     tables = camelot.read_pdf(filename, backend=GhostscriptBackend())
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 def test_url_pdfium():
@@ -97,7 +98,7 @@ def test_url_ghostscript(testdir):
     tables = camelot.read_pdf(url, backend="ghostscript")
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 @skip_on_windows
@@ -106,7 +107,7 @@ def test_url_ghostscript_custom_backend(testdir):
     tables = camelot.read_pdf(url, backend=GhostscriptBackend())
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 def test_pages_pdfium():
@@ -147,50 +148,52 @@ def test_pages_poppler():
 
 
 @skip_on_windows
+@skip_without_ghostscript
 def test_pages_ghostscript():
     url = "https://camelot-py.readthedocs.io/en/latest/_static/pdf/foo.pdf"
     tables = camelot.read_pdf(url, backend="ghostscript", use_fallback=False)
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
     tables = camelot.read_pdf(
         url, pages="1-end", backend="ghostscript", use_fallback=False
     )
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
     tables = camelot.read_pdf(
         url, pages="all", backend="ghostscript", use_fallback=False
     )
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 @skip_on_windows
+@skip_without_ghostscript
 def test_pages_ghostscript_custom_backend():
     url = "https://camelot-py.readthedocs.io/en/latest/_static/pdf/foo.pdf"
     custom_backend = GhostscriptBackend()
     tables = camelot.read_pdf(url, backend=custom_backend, use_fallback=False)
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
     tables = camelot.read_pdf(
         url, pages="1-end", backend=custom_backend, use_fallback=False
     )
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
     tables = camelot.read_pdf(
         url, pages="all", backend=custom_backend, use_fallback=False
     )
     assert repr(tables) == "<TableList n=1>"
     assert repr(tables[0]) == "<Table shape=(7, 7)>"
-    assert repr(tables[0].cells[0][0]) == "<Cell x1=120 y1=218 x2=165 y2=234>"
+    assert repr(tables[0].cells[0][0]) == "<Cell x1=121 y1=218 x2=165 y2=234>"
 
 
 def test_table_order():

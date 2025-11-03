@@ -14,6 +14,21 @@ skip_pdftopng = pytest.mark.skip(
 )
 
 
+# Check if ghostscript module is available
+def _is_ghostscript_installed():
+    try:
+        import ghostscript  # noqa: F401
+        return True
+    except ModuleNotFoundError:
+        return False
+
+
+skip_without_ghostscript = pytest.mark.skipif(
+    not _is_ghostscript_installed(),
+    reason="Ghostscript Python module not installed",
+)
+
+
 @pytest.fixture
 def testdir():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "files")

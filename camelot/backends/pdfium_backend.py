@@ -37,9 +37,9 @@ class PdfiumBackend(ConversionBackend):
         """
         if not self.installed():
             raise OSError(f"pypdfium2 is not available: {PDFIUM_EXC!r}")
-        doc = pdfium.PdfDocument(pdf_path)
-        doc.init_forms()
-        image = doc[0].render(scale=resolution / 72).to_pil()
-        image.save(png_path)
-        image.close()
-        doc.close()
+        with pdfium.PdfDocument(pdf_path) as doc:
+            doc.init_forms()
+            page = doc[0]
+            image = page.render(scale=resolution / 72).to_pil()
+            image.save(png_path)
+            image.close()
